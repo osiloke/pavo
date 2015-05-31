@@ -1,6 +1,6 @@
 package attachment
 
-import "github.com/kavkaz/pavo/upload"
+import "github.com/osiloke/pavo/upload"
 
 // Attachment contain info about directory, base mime type and all files saved.
 type Attachment struct {
