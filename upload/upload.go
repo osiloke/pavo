@@ -46,7 +46,6 @@ func Process(req *http.Request, storage string) ([]*OriginalFile, error) {
 		return nil, err
 	}
 	up := &Uploader{Root: storage, Meta: meta, Body: body}
-
 	files, err := up.SaveFiles()
 	if err == Incomplete {
 		return files, err
@@ -144,6 +143,9 @@ func (up *Uploader) Reader() (io.Reader, string, error) {
 			part, err := up.Body.MR.NextPart()
 			if err != nil {
 				return nil, "", err
+			}
+			if part.FormName() == "file" {
+				return part, part.FileName(), nil
 			}
 			if part.FormName() == "files[]" {
 				return part, part.FileName(), nil
