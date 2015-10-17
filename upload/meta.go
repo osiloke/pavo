@@ -23,7 +23,7 @@ type Range struct {
 }
 
 // Parse request headers and make Meta.
-func ParseMeta(req *http.Request) (*Meta, error) {
+func ParseMeta(cookie_name string, req *http.Request) (*Meta, error) {
 	meta := &Meta{}
 
 	if err := meta.parseContentType(req.Header.Get("Content-Type")); err != nil {
@@ -38,7 +38,7 @@ func ParseMeta(req *http.Request) (*Meta, error) {
 		return nil, err
 	}
 
-	cookie_pavo, err := req.Cookie("media-upload")
+	cookie_pavo, err := req.Cookie(cookie_name)
 	if err != nil {
 		return nil, err
 	}

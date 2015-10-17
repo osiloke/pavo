@@ -35,8 +35,8 @@ func (ofile *OriginalFile) Ext() string {
 // Returns an array of the original files and error.
 // If you load a portion of the file, chunk, it will be stored in err error Incomplete,
 // and in an array of a single file. File size will fit the current size.
-func Process(req *http.Request, storage string) ([]*OriginalFile, error) {
-	meta, err := ParseMeta(req)
+func Process(cookie_name string, req *http.Request, storage string) ([]*OriginalFile, error) {
+	meta, err := ParseMeta(cookie_name, req)
 	if err != nil {
 		return nil, err
 	}
@@ -116,7 +116,9 @@ func (up *Uploader) SaveFile() (*OriginalFile, error) {
 	if err != nil {
 		return nil, err
 	}
-
+	if fi.Size() == 0 {
+		return nil, errors.New("Empty file")
+	}
 	ofile := &OriginalFile{Filename: filename, Filepath: temp_file.Name(), Size: fi.Size()}
 
 	if up.Meta.Range != nil && ofile.Size != up.Meta.Range.Size {
