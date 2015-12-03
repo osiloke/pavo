@@ -43,6 +43,7 @@ func Process(cookie_name string, req *http.Request, storage string) ([]*Original
 
 	body, err := NewBody(req.Header.Get("X-File"), req.Body)
 	if err != nil {
+		println(err.Error())
 		return nil, err
 	}
 	up := &Uploader{Root: storage, Meta: meta, Body: body}
